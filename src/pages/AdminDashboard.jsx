@@ -198,7 +198,7 @@ export default function AdminDashboard({ onBackToHome }) {
       {/* Main Content */}
       <main className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Tab Navigation */}
-        <div className="flex space-x-2 bg-white/80 backdrop-blur-md p-1 rounded-xl border border-white/30 shadow-md mb-8 overflow-x-auto">
+        <div className="flex space-x-2 bg-white/80 backdrop-blur-md p-1 rounded-xl border border-white/30 shadow mb-8 overflow-x-auto">
           {[
             { id: "overview", label: "📊 Overview", icon: "overview" },
             { id: "users", label: "👥 Users", icon: "users" },
@@ -208,9 +208,9 @@ export default function AdminDashboard({ onBackToHome }) {
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`flex-shrink-0 py-3 px-4 rounded-lg font-medium transition-all duration-200 whitespace-nowrap ${
+              className={`flex-shrink-0 py-3 px-4 rounded-lg font-medium transition-all duration-200 whitespace-nowrap cursor-pointer ${
                 activeTab === tab.id
-                  ? "bg-gradient-to-r from-purple-500 to-indigo-600 text-white shadow-lg"
+                  ? "bg-gradient-to-r from-purple-500 to-indigo-600 text-white shadow"
                   : "text-gray-600 hover:text-gray-900"
               }`}
             >
@@ -244,7 +244,7 @@ export default function AdminDashboard({ onBackToHome }) {
           <div className="space-y-6 animate-fadeIn">
             {/* Stats Grid */}
             <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              <div className="bg-white/80 backdrop-blur-md rounded-2xl shadow-lg p-6 border border-white/30">
+              <div className="bg-white/80 backdrop-blur-md rounded-xl shadow p-6 border border-white/30">
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="text-gray-600 font-medium">Total Users</h3>
                   <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
@@ -257,7 +257,7 @@ export default function AdminDashboard({ onBackToHome }) {
                 <p className="text-sm text-gray-500 mt-2">Registered users</p>
               </div>
 
-              <div className="bg-white/80 backdrop-blur-md rounded-2xl shadow-lg p-6 border border-white/30">
+              <div className="bg-white/80 backdrop-blur-md rounded-xl shadow p-6 border border-white/30">
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="text-gray-600 font-medium">Total Predictions</h3>
                   <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
@@ -270,7 +270,7 @@ export default function AdminDashboard({ onBackToHome }) {
                 <p className="text-sm text-gray-500 mt-2">Analysis performed</p>
               </div>
 
-              <div className="bg-white/80 backdrop-blur-md rounded-2xl shadow-lg p-6 border border-white/30">
+              <div className="bg-white/80 backdrop-blur-md rounded-xl shadow p-6 border border-white/30">
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="text-gray-600 font-medium">Infected Samples</h3>
                   <div className="w-10 h-10 bg-red-100 rounded-lg flex items-center justify-center">
@@ -283,7 +283,7 @@ export default function AdminDashboard({ onBackToHome }) {
                 <p className="text-sm text-gray-500 mt-2">Positive results</p>
               </div>
 
-              <div className="bg-white/80 backdrop-blur-md rounded-2xl shadow-lg p-6 border border-white/30">
+              <div className="bg-white/80 backdrop-blur-md rounded-xl shadow p-6 border border-white/30">
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="text-gray-600 font-medium">Infection Rate</h3>
                   <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
@@ -298,7 +298,7 @@ export default function AdminDashboard({ onBackToHome }) {
             </div>
 
             {/* Stats Summary */}
-            <div className="bg-white/80 backdrop-blur-md rounded-2xl shadow-lg p-6 border border-white/30">
+            <div className="bg-white/80 backdrop-blur-md rounded-xl shadow p-6 border border-white/30">
               <h3 className="text-xl font-bold text-gray-900 mb-4">Summary</h3>
               <div className="space-y-3">
                 <div className="flex justify-between items-center pb-3 border-b border-gray-200">
@@ -322,7 +322,7 @@ export default function AdminDashboard({ onBackToHome }) {
 
         {/* Users Tab */}
         {activeTab === "users" && (
-          <div className="bg-white/80 backdrop-blur-md rounded-2xl shadow-lg p-6 border border-white/30 animate-fadeIn">
+          <div className="bg-white/80 backdrop-blur-md rounded-xl shadow p-6 border border-white/30 animate-fadeIn">
             <h2 className="text-2xl font-bold text-gray-900 mb-6">Registered Users</h2>
             {users.length > 0 ? (
               <div className="overflow-x-auto">
@@ -366,7 +366,7 @@ export default function AdminDashboard({ onBackToHome }) {
 
         {/* Predictions Tab */}
         {activeTab === "predictions" && (
-          <div className="bg-white/80 backdrop-blur-md rounded-2xl shadow-lg p-6 border border-white/30 animate-fadeIn">
+          <div className="bg-white/80 backdrop-blur-md rounded-xl shadow p-6 border border-white/30 animate-fadeIn">
             <h2 className="text-2xl font-bold text-gray-900 mb-6">All Predictions</h2>
             {predictions.length > 0 ? (
               <div className="space-y-3 max-h-[600px] overflow-y-auto">
@@ -433,7 +433,7 @@ export default function AdminDashboard({ onBackToHome }) {
         {activeTab === "training" && trainingStats && (
           <div className="space-y-6 animate-fadeIn">
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              <div className="bg-white/80 backdrop-blur-md rounded-2xl shadow-lg p-6 border border-white/30">
+              <div className="bg-white/80 backdrop-blur-md rounded-xl shadow p-6 border border-white/30">
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="text-gray-600 font-medium">Infected Training Images</h3>
                   <div className="w-10 h-10 bg-red-100 rounded-lg flex items-center justify-center">
@@ -446,7 +446,7 @@ export default function AdminDashboard({ onBackToHome }) {
                 <p className="text-sm text-gray-500 mt-2">Images in training set</p>
               </div>
 
-              <div className="bg-white/80 backdrop-blur-md rounded-2xl shadow-lg p-6 border border-white/30">
+              <div className="bg-white/80 backdrop-blur-md rounded-xl shadow p-6 border border-white/30">
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="text-gray-600 font-medium">Healthy Training Images</h3>
                   <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
@@ -459,7 +459,7 @@ export default function AdminDashboard({ onBackToHome }) {
                 <p className="text-sm text-gray-500 mt-2">Images in training set</p>
               </div>
 
-              <div className="bg-white/80 backdrop-blur-md rounded-2xl shadow-lg p-6 border border-white/30">
+              <div className="bg-white/80 backdrop-blur-md rounded-xl shadow p-6 border border-white/30">
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="text-gray-600 font-medium">Total Training Data</h3>
                   <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
@@ -474,7 +474,7 @@ export default function AdminDashboard({ onBackToHome }) {
             </div>
 
             {/* Model Status */}
-            <div className="bg-white/80 backdrop-blur-md rounded-2xl shadow-lg p-6 border border-white/30">
+            <div className="bg-white/80 backdrop-blur-md rounded-xl shadow p-6 border border-white/30">
               <h3 className="text-xl font-bold text-gray-900 mb-4">Model Status</h3>
               <div className="space-y-4">
                 <div className="flex items-center justify-between p-4 bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-xl">
@@ -543,7 +543,7 @@ export default function AdminDashboard({ onBackToHome }) {
 
                 <button
                   onClick={handleRetrain}
-                  className="w-full py-3 px-4 bg-gradient-to-r from-purple-500 to-indigo-600 text-white rounded-xl font-semibold hover:shadow-lg transition-all duration-200 flex items-center justify-center space-x-2"
+                  className="w-full py-3 px-4 bg-gradient-to-r from-purple-500 to-indigo-600 text-white rounded-xl font-semibold hover:shadow-lg transition-all duration-200 flex items-center justify-center space-x-2 cursor-pointer"
                 >
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path

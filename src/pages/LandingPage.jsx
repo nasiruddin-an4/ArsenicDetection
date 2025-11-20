@@ -180,7 +180,7 @@ export default function ArsenicDetectLanding({
             ].map((item, i) => (
               <div
                 key={i}
-                className="bg-white/80 p-6 rounded-2xl shadow-lg hover:shadow-2xl transition"
+                className="bg-white/80 p-6 rounded-2xl shadow hover:shadow-xl transition"
               >
                 <div className="text-5xl mb-4">{item.icon}</div>
                 <h3 className="text-xl font-semibold text-gray-900">
@@ -216,7 +216,7 @@ export default function ArsenicDetectLanding({
               className="p-4 h-32 bg-white/70 backdrop-blur rounded-xl shadow-md focus:outline-none"
             />
 
-            <button className="px-8 py-4 bg-gradient-to-r from-emerald-600 to-blue-500 text-white text-lg font-semibold rounded-xl shadow-lg hover:shadow-2xl transition transform hover:scale-105">
+            <button className="px-8 py-4 bg-gradient-to-r from-emerald-600 to-blue-500 text-white text-lg font-semibold rounded-xl shadow hover:shadow-xl cursor-pointer transition transform hover:scale-105">
               Send Message
             </button>
           </form>
