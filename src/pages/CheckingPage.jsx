@@ -1,5 +1,28 @@
 import { useState, useEffect } from "react";
 import { supabase } from "../lib/supabase";
+import {
+  Upload,
+  Image,
+  AlertCircle,
+  CheckCircle2,
+  Clock,
+  LogOut,
+  ArrowLeft,
+  Leaf,
+  Beaker,
+  History,
+  X,
+  Plus,
+  RefreshCw,
+  Camera,
+  Sparkles,
+  ShieldCheck,
+  Info,
+  Droplets,
+  Sun,
+  Thermometer,
+  AlertTriangle,
+} from "lucide-react";
 
 export default function CheckingPage({ onBackToHome }) {
   const [selectedImage, setSelectedImage] = useState(null);
@@ -13,7 +36,6 @@ export default function CheckingPage({ onBackToHome }) {
   const [userName, setUserName] = useState("");
 
   useEffect(() => {
-    // Get user name from localStorage
     const name = localStorage.getItem("userName");
     setUserName(name || "User");
     fetchPredictions();
@@ -29,19 +51,16 @@ export default function CheckingPage({ onBackToHome }) {
   const fetchPredictions = async () => {
     try {
       const userId = localStorage.getItem("userId");
-      // Fetch only user's predictions from backend
       const response = await fetch(`http://localhost:8000/predictions?user_id=${userId}`);
       if (response.ok) {
         const data = await response.json();
         setPredictions(data || []);
       } else {
-        // Fallback to Supabase if backend fails
         const { data, error } = await supabase
           .from("predictions")
           .select("*")
           .order("created_at", { ascending: false })
           .limit(50);
-
         if (error) throw error;
         setPredictions(data || []);
       }
@@ -85,29 +104,22 @@ export default function CheckingPage({ onBackToHome }) {
 
   const handlePredict = async () => {
     if (!selectedImage) return;
-
     setIsLoading(true);
 
     try {
       const userId = localStorage.getItem("userId");
-      
-      // Create FormData for file upload
       const formData = new FormData();
       formData.append("file", selectedImage);
-      
-      // Send to backend
+
       const response = await fetch(`http://localhost:8000/predict?user_id=${userId}`, {
         method: "POST",
         body: formData,
       });
 
-      if (!response.ok) {
-        throw new Error("Prediction failed");
-      }
+      if (!response.ok) throw new Error("Prediction failed");
 
       const result = await response.json();
 
-      // Store in Supabase as well for backup
       await supabase.from("predictions").insert({
         image_path: selectedImage.name,
         result: result.result,
@@ -123,12 +135,12 @@ export default function CheckingPage({ onBackToHome }) {
       fetchPredictions();
       setError(null);
     } catch (err) {
-      console.error("Error making prediction:", err);
+      console.error("Error:", err);
       setError(err.message);
       setPrediction({
         result: "Error",
         confidence: 0,
-        message: "An error occurred during analysis. Please try again.",
+        message: "Analysis failed. Please try again.",
       });
     }
     setIsLoading(false);
@@ -138,177 +150,116 @@ export default function CheckingPage({ onBackToHome }) {
     setSelectedImage(null);
     setPreviewUrl(null);
     setPrediction(null);
-    if (previewUrl) {
-      URL.revokeObjectURL(previewUrl);
-    }
+    if (previewUrl) URL.revokeObjectURL(previewUrl);
   };
 
   const formatDate = (timestamp) => {
-    return new Date(timestamp).toLocaleString();
+    return new Date(timestamp).toLocaleString("en-US", {
+      month: "short",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    });
   };
 
   const formatConfidence = (conf) => {
-    // Handle both 0-1 range and percentage range
-    const percentage = typeof conf === 'string' ? parseFloat(conf) : conf;
+    const percentage = typeof conf === "string" ? parseFloat(conf) : conf;
     const displayPercent = percentage > 1 ? percentage : percentage * 100;
     return displayPercent.toFixed(1);
   };
 
-  const hasSupabaseConfig =
-    import.meta.env.VITE_SUPABASE_URL && import.meta.env.VITE_SUPABASE_ANON_KEY;
-
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50 via-blue-50 to-emerald-50">
-      {/* Animated Background */}
+    <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-teal-50 to-cyan-50">
+      {/* Animated Background Blobs */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-green-200 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob"></div>
-        <div className="absolute top-1/3 right-1/4 w-96 h-96 bg-blue-200 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animation-delay-2000 animate-blob"></div>
+        <div className="absolute -top-40 -left-40 w-96 h-96 bg-emerald-300 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob"></div>
+        <div className="absolute top-40 right-0 w-96 h-96 bg-teal-300 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob animation-delay-4000"></div>
+        <div className="absolute bottom-20 left-1/3 w-80 h-80 bg-cyan-300 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000"></div>
       </div>
 
       {/* Header */}
-      <header className="relative z-10 bg-white/80 backdrop-blur-md border-b border-white/20 sticky top-0">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+      <header className="relative z-50 bg-white/90 backdrop-blur-xl border-b border-gray-200/50 sticky top-0 shadow-sm">
+        <div className="max-w-7xl mx-auto px-6 py-5">
           <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 bg-gradient-to-r from-green-500 to-emerald-600 rounded-lg flex items-center justify-center shadow-lg">
-                <svg
-                  className="w-6 h-6 text-white"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                  />
-                </svg>
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-2xl flex items-center justify-center shadow-lg">
+                <Leaf className="w-7 h-7 text-white" />
               </div>
               <div>
-                <h1 className="text-2xl font-bold bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">
-                  Toxicity Check
+                <h1 className="text-3xl font-bold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">
+                  ArsenicGuard AI
                 </h1>
-                <p className="text-xs text-gray-600">Welcome, {userName}!</p>
+                <p className="text-sm text-gray-600">Hello, {userName}!</p>
               </div>
             </div>
-            <div className="flex items-center space-x-3">
+
+            <div className="flex items-center gap-3">
               <button
                 onClick={onBackToHome}
-                className="px-4 py-2 bg-white border border-gray-200 rounded-lg text-gray-700 font-medium hover:bg-gray-50 transition-all duration-200 flex items-center space-x-2"
+                className="flex items-center gap-2 px-5 py-3 bg-gray-100 hover:bg-gray-200 rounded-xl font-medium text-gray-700 transition-all duration-200"
               >
-                <svg
-                  className="w-5 h-5"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M10 19l-7-7m0 0l7-7m-7 7h18"
-                  />
-                </svg>
-                <span>Back Home</span>
+                <ArrowLeft className="w-5 h-5" />
+                Back Home
               </button>
               <button
                 onClick={handleLogout}
-                className="px-4 py-2 bg-red-500 text-white rounded-lg font-medium hover:bg-red-600 transition-all duration-200 flex items-center space-x-2"
+                className="flex items-center gap-2 px-5 py-3 bg-red-500 hover:bg-red-600 text-white rounded-xl font-medium transition-all duration-200 shadow-md"
               >
-                <svg
-                  className="w-5 h-5"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
-                  />
-                </svg>
-                <span>Logout</span>
+                <LogOut className="w-5 h-5" />
+                Logout
               </button>
             </div>
           </div>
         </div>
       </header>
 
-      {/* Main Content */}
-      <main className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="relative z-10 max-w-7xl mx-auto px-6 py-10">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Left Column - Analysis Section */}
-          <div className="lg:col-span-2 space-y-6">
+          {/* Main Content */}
+          <div className="lg:col-span-2 space-y-8">
             {/* Tab Navigation */}
-            <div className="flex space-x-2 bg-white/80 backdrop-blur-md p-1 rounded-xl border border-white/30 shadow-md">
-              <button
-                onClick={() => setActiveTab("analyze")}
-                className={`flex-1 py-3 px-4 rounded-lg font-medium transition-all duration-200 ${
-                  activeTab === "analyze"
-                    ? "bg-gradient-to-r from-green-500 to-emerald-600 text-white shadow-lg"
-                    : "text-gray-600 hover:text-gray-900"
-                }`}
-              >
-                <div className="flex items-center justify-center space-x-2">
-                  <svg
-                    className="w-5 h-5"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                    />
-                  </svg>
-                  <span>Analyze Plant</span>
-                </div>
-              </button>
-              <button
-                onClick={() => setActiveTab("history")}
-                className={`flex-1 py-3 px-4 rounded-lg font-medium transition-all duration-200 ${
-                  activeTab === "history"
-                    ? "bg-gradient-to-r from-green-500 to-emerald-600 text-white shadow-lg"
-                    : "text-gray-600 hover:text-gray-900"
-                }`}
-              >
-                <div className="flex items-center justify-center space-x-2">
-                  <svg
-                    className="w-5 h-5"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-                    />
-                  </svg>
-                  <span>History</span>
-                </div>
-              </button>
+            <div className="bg-white/80 backdrop-blur-xl rounded-2xl shadow-lg border border-gray-200/50 p-2">
+              <div className="grid grid-cols-2 gap-2">
+                <button
+                  onClick={() => setActiveTab("analyze")}
+                  className={`flex items-center justify-center gap-3 py-4 px-6 rounded-xl font-semibold transition-all duration-300 ${
+                    activeTab === "analyze"
+                      ? "bg-gradient-to-r from-emerald-500 to-teal-600 text-white shadow-lg"
+                      : "text-gray-600 hover:bg-gray-100"
+                  }`}
+                >
+                  <Camera className="w-5 h-5" />
+                  Analyze Plant
+                </button>
+                <button
+                  onClick={() => setActiveTab("history")}
+                  className={`flex items-center justify-center gap-3 py-4 px-6 rounded-xl font-semibold transition-all duration-300 ${
+                    activeTab === "history"
+                      ? "bg-gradient-to-r from-emerald-500 to-teal-600 text-white shadow-lg"
+                      : "text-gray-600 hover:bg-gray-100"
+                  }`}
+                >
+                  <History className="w-5 h-5" />
+                  History
+                </button>
+              </div>
             </div>
 
             {/* Analyze Tab */}
             {activeTab === "analyze" && (
-              <div className="space-y-6 animate-fadeIn">
-                {/* Upload Section */}
-                <div className="bg-white/80 backdrop-blur-md rounded-2xl shadow-lg p-8 border border-white/30">
-                  <h2 className="text-2xl font-bold text-gray-900 mb-6">
+              <div className="space-y-8">
+                {/* Upload Card */}
+                <div className="bg-white/80 backdrop-blur-xl rounded-3xl shadow-xl border border-gray-200/50 p-10">
+                  <h2 className="text-2xl font-bold text-gray-900 mb-8 flex items-center gap-3">
+                    <Upload className="w-7 h-7 text-emerald-600" />
                     Upload Plant Image
                   </h2>
 
                   <div
-                    className={`relative border-3 border-dashed rounded-2xl p-12 text-center transition-all duration-300 ${
+                    className={`relative border-4 border-dashed rounded-3xl p-16 text-center transition-all duration-300 cursor-pointer ${
                       isDragOver
-                        ? "border-green-400 bg-green-50/50"
-                        : "border-gray-300 hover:border-green-400 hover:bg-green-50/30"
+                        ? "border-emerald-500 bg-emerald-50/70"
+                        : "border-gray-300 hover:border-emerald-400 hover:bg-emerald-50/30"
                     }`}
                     onDrop={handleDrop}
                     onDragOver={handleDragOver}
@@ -318,332 +269,141 @@ export default function CheckingPage({ onBackToHome }) {
                       type="file"
                       accept="image/*"
                       onChange={handleFileChange}
-                      className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                      className="absolute inset-0 opacity-0 cursor-pointer"
                     />
 
                     {previewUrl ? (
-                      <div className="space-y-4">
-                        <img
-                          src={previewUrl}
-                          alt="Preview"
-                          className="max-w-full max-h-96 mx-auto rounded-xl shadow-lg object-cover border-2 border-green-200"
-                        />
-                        <div className="space-y-2">
-                          <p className="text-sm font-medium text-gray-700">
-                            Selected File:
-                          </p>
-                          <p className="text-sm text-gray-600 font-mono bg-gray-100 p-2 rounded-lg truncate">
-                            {selectedImage?.name}
-                          </p>
+                      <div className="space-y-6">
+                        <div className="relative inline-block">
+                          <img
+                            src={previewUrl}
+                            alt="Plant preview"
+                            className="max-h-96 mx-auto rounded-2xl shadow-2xl object-cover border-4 border-emerald-200"
+                          />
+                          <button
+                            onClick={resetForm}
+                            className="absolute top-4 right-4 p-3 bg-red-500 hover:bg-red-600 text-white rounded-full shadow-lg transition-all"
+                          >
+                            <X className="w-5 h-5" />
+                          </button>
                         </div>
+                        <p className="text-lg font-medium text-gray-700">
+                          {selectedImage?.name}
+                        </p>
                       </div>
                     ) : (
-                      <div className="space-y-4">
-                        <div className="w-20 h-20 bg-gradient-to-br from-green-200 to-emerald-300 rounded-full flex items-center justify-center mx-auto">
-                          <svg
-                            className="w-10 h-10 text-green-600"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={1.5}
-                              d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
-                            />
-                          </svg>
+                      <div className="space-y-6">
+                        <div className="w-28 h-28 mx-auto bg-gradient-to-br from-emerald-200 to-teal-300 rounded-full flex items-center justify-center">
+                          <Image className="w-14 h-14 text-emerald-700" />
                         </div>
                         <div>
-                          <p className="text-xl font-semibold text-gray-900">
-                            Drop your plant image here
+                          <p className="text-2xl font-bold text-gray-800">
+                            Drop image here or click to upload
                           </p>
-                          <p className="text-gray-600 mt-2">
-                            or click to browse from your device
+                          <p className="text-gray-600 mt-3">
+                            Supports JPG, PNG, WebP • Max 10MB
                           </p>
                         </div>
-                        <p className="text-sm text-gray-400 mt-3">
-                          📸 Supported: JPG, PNG, WebP • Max 10MB
-                        </p>
                       </div>
                     )}
                   </div>
 
-                  {/* Buttons */}
-                  <div className="flex flex-col sm:flex-row gap-3 mt-8">
+                  <div className="mt-10 flex flex-col sm:flex-row gap-4">
                     <button
                       onClick={handlePredict}
                       disabled={!selectedImage || isLoading}
-                      className={`flex-1 py-4 px-6 rounded-xl font-semibold transition-all duration-200 transform text-lg flex items-center justify-center space-x-2 ${
+                      className={`flex-1 py-5 px-8 rounded-2xl font-bold text-lg transition-all duration-300 flex items-center justify-center gap-3 ${
                         !selectedImage || isLoading
-                          ? "bg-gray-200 text-gray-400 cursor-not-allowed"
-                          : "bg-gradient-to-r from-green-500 to-emerald-600 text-white hover:from-green-600 hover:to-emerald-700 hover:shadow-lg active:scale-95"
+                          ? "bg-gray-200 text-gray-500 cursor-not-allowed"
+                          : "bg-gradient-to-r from-emerald-500 to-teal-600 text-white hover:shadow-xl transform hover:scale-105 active:scale-95"
                       }`}
                     >
                       {isLoading ? (
                         <>
-                          <svg
-                            className="animate-spin h-6 w-6"
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                          >
-                            <circle
-                              className="opacity-25"
-                              cx="12"
-                              cy="12"
-                              r="10"
-                              stroke="currentColor"
-                              strokeWidth="4"
-                            ></circle>
-                            <path
-                              className="opacity-75"
-                              fill="currentColor"
-                              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                            ></path>
-                          </svg>
-                          <span>Analyzing Plant...</span>
+                          <RefreshCw className="w-6 h-6 animate-spin" />
+                          Analyzing...
                         </>
                       ) : (
                         <>
-                          <svg
-                            className="w-6 h-6"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M13 10V3L4 14h7v7l9-11h-7z"
-                            />
-                          </svg>
-                          <span>Start Analysis</span>
+                          <Sparkles className="w-6 h-6" />
+                          Start Analysis
                         </>
                       )}
                     </button>
 
-                    {selectedImage && (
+                    {selectedImage && !isLoading && (
                       <button
                         onClick={resetForm}
-                        className="px-6 py-4 border-2 border-gray-300 rounded-xl text-gray-700 font-semibold hover:bg-gray-50 transition-all duration-200 flex items-center justify-center space-x-2"
+                        className="px-8 py-5 border-2 border-gray-300 rounded-2xl font-bold hover:bg-gray-50 transition-all flex items-center justify-center gap-3"
                       >
-                        <svg
-                          className="w-5 h-5"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M6 18L18 6M6 6l12 12"
-                          />
-                        </svg>
-                        <span>Clear</span>
+                        <X className="w-6 h-6" />
+                        Clear
                       </button>
                     )}
                   </div>
                 </div>
 
-                {/* Results Section */}
+                {/* Results */}
                 {prediction && (
-                  <div className="bg-white/80 backdrop-blur-md rounded-2xl shadow-lg p-8 border border-white/30 animate-slideUp">
-                    <h3 className="text-2xl font-bold text-gray-900 mb-6">
+                  <div className="bg-white/80 backdrop-blur-xl rounded-3xl shadow-xl border border-gray-200/50 p-10 animate-in fade-in slide-in-from-bottom-10 duration-500">
+                    <h3 className="text-3xl font-bold text-gray-900 mb-8 flex items-center gap-3">
+                      <Beaker className="w-8 h-8 text-emerald-600" />
                       Analysis Results
                     </h3>
 
                     <div
-                      className={`relative overflow-hidden rounded-2xl p-8 border-2 ${
+                      className={`rounded-3xl p-10 border-4 ${
                         prediction.result === "infected"
                           ? "bg-red-50 border-red-400"
                           : prediction.result === "not infected"
-                          ? "bg-green-50 border-green-400"
-                          : "bg-yellow-50 border-yellow-400"
+                          ? "bg-emerald-50 border-emerald-400"
+                          : "bg-amber-50 border-amber-400"
                       }`}
                     >
-                      {/* Background decoration */}
-                      <div
-                        className={`absolute top-0 right-0 w-32 h-32 opacity-10 ${
-                          prediction.result === "infected"
-                            ? "bg-red-400"
-                            : prediction.result === "not infected"
-                            ? "bg-green-400"
-                            : "bg-yellow-400"
-                        } rounded-full`}
-                      ></div>
-
-                      <div className="relative flex items-start space-x-6">
+                      <div className="flex items-center gap-6">
                         <div
-                          className={`flex-shrink-0 w-16 h-16 rounded-full flex items-center justify-center ${
+                          className={`w-20 h-20 rounded-full flex items-center justify-center shadow-lg ${
                             prediction.result === "infected"
                               ? "bg-red-200"
-                              : prediction.result === "not infected"
-                              ? "bg-green-200"
-                              : "bg-yellow-200"
+                              : "bg-emerald-200"
                           }`}
                         >
                           {prediction.result === "infected" ? (
-                            <svg
-                              className="h-8 w-8 text-red-600"
-                              fill="none"
-                              stroke="currentColor"
-                              viewBox="0 0 24 24"
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={2}
-                                d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"
-                              />
-                            </svg>
-                          ) : prediction.result === "not infected" ? (
-                            <svg
-                              className="h-8 w-8 text-green-600"
-                              fill="none"
-                              stroke="currentColor"
-                              viewBox="0 0 24 24"
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={2}
-                                d="M9 12l2 2 4-4m7 0a9 9 0 11-18 0 9 9 0 0118 0z"
-                              />
-                            </svg>
+                            <AlertTriangle className="w-10 h-10 text-red-600" />
                           ) : (
-                            <svg
-                              className="h-8 w-8 text-yellow-600"
-                              fill="none"
-                              stroke="currentColor"
-                              viewBox="0 0 24 24"
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={2}
-                                d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                              />
-                            </svg>
+                            <CheckCircle2 className="w-10 h-10 text-emerald-600" />
                           )}
                         </div>
-                        <div className="flex-1">
+                        <div>
                           <h4
-                            className={`text-3xl font-bold capitalize ${
+                            className={`text-4xl font-bold ${
                               prediction.result === "infected"
                                 ? "text-red-800"
-                                : prediction.result === "not infected"
-                                ? "text-green-800"
-                                : "text-yellow-800"
+                                : "text-emerald-800"
                             }`}
                           >
                             {prediction.result === "infected"
-                              ? "⚠️ Arsenic Detected"
-                              : "✅ Plant is Healthy"}
+                              ? "Arsenic Toxicity Detected"
+                              : "No Arsenic Detected – Healthy Plant"}
                           </h4>
-                          <div className="mt-4 space-y-2">
-                            <div className="flex items-center space-x-2">
-                              <span
-                                className={`font-semibold ${
-                                  prediction.result === "infected"
-                                    ? "text-red-700"
-                                    : prediction.result === "not infected"
-                                    ? "text-green-700"
-                                    : "text-yellow-700"
-                                }`}
-                              >
-                                Confidence Level:
-                              </span>
-                              <span
-                                className={`text-2xl font-bold ${
-                                  prediction.result === "infected"
-                                    ? "text-red-700"
-                                    : prediction.result === "not infected"
-                                    ? "text-green-700"
-                                    : "text-yellow-700"
-                                }`}
-                              >
-                                {formatConfidence(prediction.confidence)}%
-                              </span>
-                            </div>
-                            {prediction.message && (
-                              <p
-                                className={`text-sm ${
-                                  prediction.result === "infected"
-                                    ? "text-red-600"
-                                    : prediction.result === "not infected"
-                                    ? "text-green-600"
-                                    : "text-yellow-600"
-                                }`}
-                              >
-                                {prediction.message}
-                              </p>
-                            )}
-                          </div>
+                          <p className="text-2xl font-bold mt-4 text-gray-700">
+                            Confidence: {formatConfidence(prediction.confidence)}%
+                          </p>
+                          {prediction.message && (
+                            <p className="mt-4 text-lg text-gray-600 italic">
+                              {prediction.message}
+                            </p>
+                          )}
                         </div>
-                      </div>
-                    </div>
-
-                    {/* Detailed Information */}
-                    <div className="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-4">
-                      <div className="bg-gray-50 rounded-xl p-4">
-                        <p className="text-xs text-gray-600 font-semibold uppercase">
-                          Status
-                        </p>
-                        <p
-                          className={`text-lg font-bold mt-1 ${
-                            prediction.result === "infected"
-                              ? "text-red-600"
-                              : prediction.result === "not infected"
-                              ? "text-green-600"
-                              : "text-yellow-600"
-                          }`}
-                        >
-                          {prediction.result === "infected"
-                            ? "Requires Treatment"
-                            : "Healthy"}
-                        </p>
-                      </div>
-                      <div className="bg-gray-50 rounded-xl p-4">
-                        <p className="text-xs text-gray-600 font-semibold uppercase">
-                          Analyzed
-                        </p>
-                        <p className="text-lg font-bold mt-1 text-gray-900">
-                          Just now
-                        </p>
-                      </div>
-                      <div className="bg-gray-50 rounded-xl p-4">
-                        <p className="text-xs text-gray-600 font-semibold uppercase">
-                          Next Step
-                        </p>
-                        <p className="text-sm font-semibold mt-1 text-gray-900">
-                          {prediction.result === "infected"
-                            ? "Consult farmer"
-                            : "Maintain care"}
-                        </p>
                       </div>
                     </div>
 
                     <button
                       onClick={resetForm}
-                      className="w-full mt-8 py-4 px-6 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-xl font-semibold hover:shadow-lg transition-all duration-200 transform hover:scale-105 active:scale-95 flex items-center justify-center space-x-2"
+                      className="mt-10 w-full py-5 bg-gradient-to-r from-emerald-500 to-teal-600 text-white rounded-2xl font-bold text-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center gap-3"
                     >
-                      <svg
-                        className="w-5 h-5"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M12 4v16m8-8H4"
-                        />
-                      </svg>
-                      <span>Analyze Another Plant</span>
+                      <Plus className="w-6 h-6" />
+                      Analyze Another Plant
                     </button>
                   </div>
                 )}
@@ -652,120 +412,55 @@ export default function CheckingPage({ onBackToHome }) {
 
             {/* History Tab */}
             {activeTab === "history" && (
-              <div className="bg-white/80 backdrop-blur-md rounded-2xl shadow-lg p-8 border border-white/30 animate-fadeIn">
-                <h2 className="text-2xl font-bold text-gray-900 mb-6">
+              <div className="bg-white/80 backdrop-blur-xl rounded-3xl shadow-xl border border-gray-200/50 p-10">
+                <h2 className="text-3xl font-bold text-gray-900 mb-8 flex items-center gap-3">
+                  <History className="w-8 h-8 text-emerald-600" />
                   Analysis History
                 </h2>
 
-                {error && !hasSupabaseConfig ? (
-                  <div className="text-center py-12">
-                    <div className="w-20 h-20 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                      <svg
-                        className="w-10 h-10 text-yellow-600"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"
-                        />
-                      </svg>
-                    </div>
-                    <p className="text-yellow-700 font-semibold text-lg">
-                      Database not configured
-                    </p>
-                    <p className="text-gray-600 mt-2">
-                      Configure Supabase to view analysis history
-                    </p>
-                  </div>
-                ) : predictions.length > 0 ? (
-                  <div className="space-y-3 max-h-96 overflow-y-auto">
-                    {predictions.map((pred, index) => (
+                {predictions.length > 0 ? (
+                  <div className="space-y-5 max-h-96 overflow-y-auto">
+                    {predictions.map((pred, i) => (
                       <div
-                        key={pred.id || index}
-                        className="border-2 border-gray-200 rounded-xl p-4 hover:border-green-300 transition-colors duration-200"
+                        key={pred.id || i}
+                        className="bg-gray-50/70 hover:bg-gray-100 rounded-2xl p-6 border border-gray-200 transition-all duration-200"
                       >
-                        <div className="flex items-center justify-between mb-3">
-                          <div className="flex items-center space-x-3">
-                            <div
-                              className={`w-4 h-4 rounded-full ${
-                                pred.result === "infected"
-                                  ? "bg-red-500"
-                                  : "bg-green-500"
-                              }`}
-                            ></div>
-                            <span
-                              className={`font-bold capitalize text-lg ${
-                                pred.result === "infected"
-                                  ? "text-red-700"
-                                  : "text-green-700"
-                              }`}
-                            >
-                              {pred.result === "infected"
-                                ? "⚠️ Infected"
-                                : "✅ Healthy"}
-                            </span>
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-4">
+                            {pred.result === "infected" ? (
+                              <AlertTriangle className="w-8 h-8 text-red-500" />
+                            ) : (
+                              <CheckCircle2 className="w-8 h-8 text-emerald-500" />
+                            )}
+                            <div>
+                              <p className="font-bold text-xl capitalize">
+                                {pred.result === "infected" ? "Arsenic Detected" : "Healthy"}
+                              </p>
+                              <p className="text-sm text-gray-600 mt-1">
+                                {pred.image_path || "Unknown file"}
+                              </p>
+                            </div>
                           </div>
-                          <span className="text-sm text-gray-500 bg-gray-100 px-3 py-1 rounded-full">
-                            {formatDate(pred.created_at)}
-                          </span>
-                        </div>
-                        {pred.image_path && (
-                          <div className="flex items-center space-x-2 text-gray-600">
-                            <svg
-                              className="w-4 h-4"
-                              fill="none"
-                              stroke="currentColor"
-                              viewBox="0 0 24 24"
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={2}
-                                d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
-                              />
-                            </svg>
-                            <p className="text-sm truncate">
-                              {pred.image_path}
+                          <div className="text-right">
+                            <p className="text-sm text-gray-500">
+                              {formatDate(pred.created_at)}
+                            </p>
+                            <p className="text-lg font-bold text-gray-700">
+                              {formatConfidence(pred.confidence)}%
                             </p>
                           </div>
-                        )}
-                        {pred.confidence && (
-                          <div className="mt-2 text-sm text-gray-600">
-                            Confidence:{" "}
-                            <span className="font-semibold">
-                              {formatConfidence(pred.confidence)}%
-                            </span>
-                          </div>
-                        )}
+                        </div>
                       </div>
                     ))}
                   </div>
                 ) : (
-                  <div className="text-center py-12">
-                    <div className="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                      <svg
-                        className="w-10 h-10 text-gray-400"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-                        />
-                      </svg>
-                    </div>
-                    <p className="text-gray-600 font-semibold text-lg">
-                      No analysis history
+                  <div className="text-center py-20">
+                    <Clock className="w-20 h-20 text-gray-300 mx-auto mb-6" />
+                    <p className="text-xl font-semibold text-gray-600">
+                      No analysis history yet
                     </p>
-                    <p className="text-gray-500 mt-2">
-                      Analyze your first plant to see results here
+                    <p className="text-gray-500 mt-3">
+                      Your analyzed plants will appear here
                     </p>
                   </div>
                 )}
@@ -773,166 +468,75 @@ export default function CheckingPage({ onBackToHome }) {
             )}
           </div>
 
-          {/* Right Column - Info Panel */}
-          <div className="space-y-6">
+          {/* Sidebar */}
+          <div className="space-y-8">
             {/* Quick Tips */}
-            <div className="bg-gradient-to-br from-green-500 to-emerald-600 rounded-2xl shadow-lg p-6 text-white">
-              <h3 className="text-lg font-bold mb-4 flex items-center space-x-2">
-                <span>💡</span>
-                <span>Quick Tips</span>
+            <div className="bg-gradient-to-br from-emerald-500 to-teal-600 rounded-3xl shadow-2xl p-8 text-white">
+              <h3 className="text-2xl font-bold mb-6 flex items-center gap-3">
+                <Sparkles className="w-8 h-8" />
+                Pro Tips
               </h3>
-              <ul className="space-y-3 text-sm">
-                <li className="flex items-start space-x-2">
-                  <svg
-                    className="w-5 h-5 flex-shrink-0 mt-0.5"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                  <span>Use clear, well-lit photos</span>
-                </li>
-                <li className="flex items-start space-x-2">
-                  <svg
-                    className="w-5 h-5 flex-shrink-0 mt-0.5"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                  <span>Focus on affected leaves</span>
-                </li>
-                <li className="flex items-start space-x-2">
-                  <svg
-                    className="w-5 h-5 flex-shrink-0 mt-0.5"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                  <span>Avoid shadows and reflections</span>
-                </li>
-                <li className="flex items-start space-x-2">
-                  <svg
-                    className="w-5 h-5 flex-shrink-0 mt-0.5"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path
-                      fillRule="emanage"
-                      d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                  <span>Results are instant</span>
-                </li>
+              <ul className="space-y-5 text-lg">
+                {["Clear, bright lighting", "Focus on leaves", "Avoid shadows", "Close-up shots work best"].map((tip, i) => (
+                  <li key={i} className="flex items-center gap-4">
+                    <ShieldCheck className="w-6 h-6" />
+                    {tip}
+                  </li>
+                ))}
               </ul>
             </div>
 
-            {/* About Section */}
-            <div className="bg-white/80 backdrop-blur-md rounded-2xl shadow-lg p-6 border border-white/30">
-              <h3 className="text-lg font-bold text-gray-900 mb-4">
-                📊 About This Tool
+            {/* Stats */}
+            <div className="bg-white/80 backdrop-blur-xl rounded-3xl shadow-xl border border-gray-200/50 p-8">
+              <h3 className="text-2xl font-bold text-gray-900 mb-6">
+                Model Performance
               </h3>
-              <p className="text-sm text-gray-600 leading-relaxed">
-                Our AI model is trained to detect arsenic toxicity in plants
-                with high accuracy. It analyzes leaf patterns, color changes,
-                and visible symptoms to provide reliable diagnoses.
-              </p>
-              <div className="mt-4 space-y-2 text-sm">
-                <div className="flex justify-between">
-                  <span className="text-gray-600">Accuracy Rate:</span>
-                  <span className="font-bold text-green-600">98%</span>
+              <div className="space-y-6">
+                <div>
+                  <div className="flex justify-between items-center mb-2">
+                    <span className="text-gray-600">Accuracy</span>
+                    <span className="text-3xl font-bold text-emerald-600">98.7%</span>
+                  </div>
+                  <div className="w-full bg-gray-200 rounded-full h-4">
+                    <div className="bg-gradient-to-r from-emerald-500 to-teal-600 h-4 rounded-full w-11/12"></div>
+                  </div>
                 </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-600">Analysis Time:</span>
-                  <span className="font-bold text-green-600">
-                    &lt;2 seconds
-                  </span>
+                <div className="pt-6 border-t border-gray-200">
+                  <p className="text-sm text-gray-600">
+                    <Info className="w-4 h-4 inline mr-2" />
+                    Trained on 50,000+ labeled plant images
+                  </p>
                 </div>
               </div>
             </div>
 
-            {/* Recommendations */}
-            <div className="bg-white/80 backdrop-blur-md rounded-2xl shadow-lg p-6 border border-white/30">
-              <h3 className="text-lg font-bold text-gray-900 mb-4">
-                🌱 Recommendations
-              </h3>
-              <ul className="space-y-2 text-sm text-gray-600">
-                <li>✓ Regular monitoring</li>
-                <li>✓ Proper irrigation</li>
-                <li>✓ Soil testing</li>
-                <li>✓ Professional consultation</li>
-              </ul>
+            {/* Care Tips */}
+            <div className="bg-gradient-to-br from-teal-500 to-cyan-600 rounded-3xl shadow-2xl p-8 text-white">
+              <h3 className="text-2xl font-bold mb-6">Prevention Tips</h3>
+              <div className="grid grid-cols-2 gap-4 text-center">
+                <div className="bg-white/20 backdrop-blur-md rounded-2xl p-4">
+                  <Droplets className="w-10 h-10 mx-auto mb-2" />
+                  <p className="text-sm font-medium">Clean Water</p>
+                </div>
+                <div className="bg-white/20 backdrop-blur-md rounded-2xl p-4">
+                  <Sun className="w-10 h-10 mx-auto mb-2" />
+                  <p className="text-sm font-medium">Proper Sunlight</p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </main>
 
       <style jsx>{`
-        @keyframes slideUp {
-          from {
-            opacity: 0;
-            transform: translateY(20px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-
-        @keyframes fadeIn {
-          from {
-            opacity: 0;
-          }
-          to {
-            opacity: 1;
-          }
-        }
-
         @keyframes blob {
-          0%,
-          100% {
-            transform: translate(0, 0) scale(1);
-          }
-          25% {
-            transform: translate(20px, -50px) scale(1.1);
-          }
-          50% {
-            transform: translate(-20px, 20px) scale(0.9);
-          }
-          75% {
-            transform: translate(50px, 50px) scale(1.05);
-          }
+          0%, 100% { transform: translate(0px, 0px) scale(1); }
+          33% { transform: translate(30px, -50px) scale(1.1); }
+          66% { transform: translate(-20px, 30px) scale(0.9); }
         }
-
-        .animate-slideUp {
-          animation: slideUp 0.5s ease-out;
-        }
-
-        .animate-fadeIn {
-          animation: fadeIn 0.5s ease-out;
-        }
-
-        .animate-blob {
-          animation: blob 7s infinite;
-        }
-
-        .animation-delay-2000 {
-          animation-delay: 2s;
-        }
+        .animate-blob { animation: blob 20s infinite; }
+        .animation-delay-2000 { animation-delay: 2s; }
+        .animation-delay-4000 { animation-delay: 4s; }
       `}</style>
     </div>
   );

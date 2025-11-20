@@ -9,7 +9,7 @@ export default function ArsenicDetectLanding({
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-emerald-50 to-green-50">
       {/* Background Blobs */}
-      <div className="fixed inset-0 overflow-hidden pointer-events-none">
+      <div className=" inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-0 left-1/4 w-96 h-96 bg-blue-300 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob"></div>
         <div className="absolute top-1/3 right-1/4 w-96 h-96 bg-green-300 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000"></div>
         <div className="absolute bottom-0 left-1/2 w-96 h-96 bg-emerald-300 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-4000"></div>
