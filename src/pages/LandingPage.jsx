@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Facebook, Twitter, Linkedin } from "lucide-react"
+import { Facebook, Twitter, Linkedin } from "lucide-react";
 
 export default function ArsenicDetectLanding({
   onNavigateToRegister,
@@ -35,8 +35,14 @@ export default function ArsenicDetectLanding({
 
             setCounts({
               images: Math.min(Math.floor(current.images), targets.images),
-              accuracy: Math.min(Number(current.accuracy.toFixed(1)), targets.accuracy),
-              countries: Math.min(Math.round(current.countries), targets.countries),
+              accuracy: Math.min(
+                Number(current.accuracy.toFixed(1)),
+                targets.accuracy
+              ),
+              countries: Math.min(
+                Math.round(current.countries),
+                targets.countries
+              ),
             });
 
             if (
@@ -78,15 +84,46 @@ export default function ArsenicDetectLanding({
             <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-emerald-600 bg-clip-text text-transparent">
               ArsenicDetect
             </h1>
-            <p className="text-sm text-gray-600">Image-based Arsenic Detection</p>
+            <p className="text-sm text-gray-600">
+              Image-based Arsenic Detection
+            </p>
           </div>
           <nav>
             <ul className="flex space-x-8 text-gray-700 font-medium">
-              <li><a href="#" className="hover:text-emerald-600 transition">Home</a></li>
-              <li><button onClick={onNavigateToLogin} className="hover:text-emerald-600 transition cursor-pointer">Login</button></li>
-              <li><button onClick={onNavigateToRegister} className="hover:text-emerald-600 transition cursor-pointer">Register</button></li>
-              <li><a href="#about" className="hover:text-emerald-600 transition">About</a></li>
-              <li><a href="#contact" className="hover:text-emerald-600 transition">Contact</a></li>
+              <li>
+                <a href="#" className="hover:text-emerald-600 transition">
+                  Home
+                </a>
+              </li>
+              <li>
+                <button
+                  onClick={onNavigateToLogin}
+                  className="hover:text-emerald-600 transition cursor-pointer"
+                >
+                  Login
+                </button>
+              </li>
+              <li>
+                <button
+                  onClick={onNavigateToRegister}
+                  className="hover:text-emerald-600 transition cursor-pointer"
+                >
+                  Register
+                </button>
+              </li>
+              <li>
+                <a href="#about" className="hover:text-emerald-600 transition">
+                  About
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#contact"
+                  className="hover:text-emerald-600 transition"
+                >
+                  Contact
+                </a>
+              </li>
             </ul>
           </nav>
         </div>
@@ -104,7 +141,8 @@ export default function ArsenicDetectLanding({
               Through Image Processing
             </h2>
             <p className="text-xl text-gray-600 leading-relaxed">
-              Upload your water test strip image and get instant, accurate results powered by AI.
+              Upload your water test strip image and get instant, accurate
+              results powered by AI.
             </p>
             <button
               onClick={onNavigateToLogin}
@@ -113,24 +151,47 @@ export default function ArsenicDetectLanding({
               className="group relative inline-flex items-center px-10 py-5 bg-gradient-to-r from-blue-600 to-emerald-600 text-white text-xl font-bold rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105"
             >
               <span>Get Started Now</span>
-              <svg className={`w-6 h-6 ml-3 transition-transform ${isHovering ? "translate-x-2" : ""}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+              <svg
+                className={`w-6 h-6 ml-3 transition-transform ${
+                  isHovering ? "translate-x-2" : ""
+                }`}
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M13 7l5 5m0 0l-5 5m5-5H6"
+                />
               </svg>
             </button>
           </div>
           <div className="flex justify-center">
-            <div className="p-10 bg-gradient-to-br from-blue-100/80 to-emerald-100/80 rounded-3xl shadow-2xl backdrop-blur-sm border border-white/50">
-              <img src="/sample-water-test.png" alt="Water test" className="w-80 rounded-2xl shadow-xl border-8 border-white/60" />
+            <div className="p-2">
+              <img
+                src="/drop.gif"
+                alt="Water test"
+                className="w-[400px] rounded-xl border-white/60"
+              />
             </div>
           </div>
         </div>
 
         {/* Animated Stats - NOW FULLY WORKING */}
-        <div ref={statsRef} className="grid sm:grid-cols-3 gap-10 mt-32 pt-20 border-t border-white">
+        <div
+          ref={statsRef}
+          className="grid sm:grid-cols-3 gap-10 mt-32 pt-20 border-t border-white"
+        >
           {[
             { value: counts.images, label: "Images Analyzed", suffix: "+" },
             { value: counts.accuracy, label: "Model Accuracy", suffix: "%" },
-            { value: counts.countries, label: "Countries Reached", suffix: "+" },
+            {
+              value: counts.countries,
+              label: "Countries Reached",
+              suffix: "+",
+            },
           ].map((stat, i) => (
             <div key={i} className="text-center">
               <div className="text-5xl lg:text-6xl font-extrabold bg-gradient-to-r from-blue-600 to-emerald-600 bg-clip-text text-transparent">
@@ -250,13 +311,26 @@ export default function ArsenicDetectLanding({
 
       <style jsx>{`
         @keyframes blob {
-          0%, 100% { transform: translate(0, 0) scale(1); }
-          33% { transform: translate(30px, -50px) scale(1.1); }
-          66% { transform: translate(-20px, 30px) scale(0.9); }
+          0%,
+          100% {
+            transform: translate(0, 0) scale(1);
+          }
+          33% {
+            transform: translate(30px, -50px) scale(1.1);
+          }
+          66% {
+            transform: translate(-20px, 30px) scale(0.9);
+          }
         }
-        .animate-blob { animation: blob 12s infinite; }
-        .animation-delay-2000 { animation-delay: 2s; }
-        .animation-delay-4000 { animation-delay: 4s; }
+        .animate-blob {
+          animation: blob 12s infinite;
+        }
+        .animation-delay-2000 {
+          animation-delay: 2s;
+        }
+        .animation-delay-4000 {
+          animation-delay: 4s;
+        }
       `}</style>
     </div>
   );
