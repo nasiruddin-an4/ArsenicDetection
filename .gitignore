@@ -8,6 +8,8 @@ pnpm-debug.log*
 lerna-debug.log*
 /backend/uploads/
 backend/training_data/
+.venv/
+venv/
 
 node_modules
 dist

@@ -11,6 +11,40 @@ Python 3.8+
 
 Modern web browser
 
+------------------ Virtual Environment Setup (Windows) ---------------------
+
+1. Create Virtual Environment
+   bash
+   python -m venv venv
+
+2. Activate Virtual Environment
+   bash
+   venv\Scripts\activate
+
+3. Upgrade pip
+   bash
+   python -m pip install --upgrade pip
+
+4. Install Backend Dependencies
+   bash
+   pip install fastapi uvicorn numpy pillow python-multipart
+
+5. Install Frontend Dependencies (in separate terminal)
+   bash
+   npm install
+
+------------------ Install Process Backend ---------------------
+
+1. pip install fastapi uvicorn
+2. pip install --upgrade pip
+3. pip install numpy pillow
+4. pip install python-multipart
+5. pip install -r requirements.txt
+   python app.py
+   ------------------ Install Process Frontend ---------------------
+
+6. npm install
+
 Installation & Running
 Start the Backend
 
@@ -48,39 +82,39 @@ Click any analysis for detailed view
 Clear history when needed
 
 🎯 Key Features
-Feature	Description
-🖼️ Image Upload	Drag & drop or click to upload samples
-🤖 ML Analysis	Instant arsenic detection with confidence scores
-📈 Live Dashboard	Real-time model statistics and history
-💾 Data Persistence	Automatically saves your analysis history
-📱 Responsive Design	Works perfectly on desktop, tablet, and mobile
-🎨 Professional UI	Clean, modern interface with smooth animations
+Feature Description
+🖼️ Image Upload Drag & drop or click to upload samples
+🤖 ML Analysis Instant arsenic detection with confidence scores
+📈 Live Dashboard Real-time model statistics and history
+💾 Data Persistence Automatically saves your analysis history
+📱 Responsive Design Works perfectly on desktop, tablet, and mobile
+🎨 Professional UI Clean, modern interface with smooth animations
 🏗️ Architecture
 text
-Frontend (React + Vite)          Backend (Python + Flask)
-     │                                  │
-     ├─ Landing Page (Public)          │
-     ├─ Authentication                 ├─ /register
-     ├─ Detection Page (Analysis)      ├─ /login  
-     ├─ Dashboard (Analytics)          ├─ /predict
-     └─ Local Storage (Persistence)    └─ /training-stats
+Frontend (React + Vite) Backend (Python + Flask)
+│ │
+├─ Landing Page (Public) │
+├─ Authentication ├─ /register
+├─ Detection Page (Analysis) ├─ /login  
+ ├─ Dashboard (Analytics) ├─ /predict
+└─ Local Storage (Persistence) └─ /training-stats
 📁 Project Structure
 text
 ArsenicDetection/
 ├── src/
-│   ├── pages/
-│   │   ├── LandingPage.jsx      # Public welcome page
-│   │   ├── Login.jsx            # User authentication
-│   │   ├── register.jsx         # User registration
-│   │   ├── Detection.jsx        # 🔍 Image analysis interface
-│   │   └── Dashboard.jsx        # 📊 Analytics & history hub
-│   ├── App.jsx                  # Main router
-│   └── main.jsx                 # App entry point
+│ ├── pages/
+│ │ ├── LandingPage.jsx # Public welcome page
+│ │ ├── Login.jsx # User authentication
+│ │ ├── register.jsx # User registration
+│ │ ├── Detection.jsx # 🔍 Image analysis interface
+│ │ └── Dashboard.jsx # 📊 Analytics & history hub
+│ ├── App.jsx # Main router
+│ └── main.jsx # App entry point
 ├── backend/
-│   ├── app.py                   # Flask server
-│   ├── main.py                  # ML model integration
-│   └── training_data/           # Training datasets
-└── public/                      # Static assets
+│ ├── app.py # Flask server
+│ ├── main.py # ML model integration
+│ └── training_data/ # Training datasets
+└── public/ # Static assets
 🔄 User Flow
 Landing → Learn about the app
 
