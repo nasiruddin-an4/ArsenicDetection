@@ -68,5 +68,6 @@ backend/
 ├── requirements.txt    # Python dependencies
 ├── database_setup.sql  # Database schema
 ├── models/            # Place your .h5 model files here
-└── uploads/           # Uploaded images storage
+└── uploads/           # Uploaded images storage 
+/training_data/    https://drive.google.com/drive/folders/1RsKvPydEHZR8ENBOolbTr5TXop-CEft9?usp=sharing
 ```
