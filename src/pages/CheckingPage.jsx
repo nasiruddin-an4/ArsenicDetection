@@ -196,14 +196,14 @@ export default function CheckingPage({ onBackToHome }) {
             <div className="flex items-center gap-3">
               <button
                 onClick={onBackToHome}
-                className="flex items-center gap-2 px-5 py-3 bg-gray-100 hover:bg-gray-200 rounded-xl font-medium text-gray-700 transition-all duration-200"
+                className="flex items-center gap-2 px-5 py-3 bg-gray-100 hover:bg-gray-200 rounded-xl font-medium text-gray-700 transition-all duration-200 cursor-pointer"
               >
                 <ArrowLeft className="w-5 h-5" />
                 Back Home
               </button>
               <button
                 onClick={handleLogout}
-                className="flex items-center gap-2 px-5 py-3 bg-red-500 hover:bg-red-600 text-white rounded-xl font-medium transition-all duration-200 shadow-md"
+                className="flex items-center gap-2 px-5 py-3 bg-red-500 hover:bg-red-600 text-white rounded-xl font-medium transition-all duration-200 shadow-md cursor-pointer"
               >
                 <LogOut className="w-5 h-5" />
                 Logout
@@ -218,11 +218,11 @@ export default function CheckingPage({ onBackToHome }) {
           {/* Main Content */}
           <div className="lg:col-span-2 space-y-8">
             {/* Tab Navigation */}
-            <div className="bg-white/80 backdrop-blur-xl rounded-2xl shadow-lg border border-gray-200/50 p-2">
+            <div className="bg-white/80 backdrop-blur-xl rounded-xl shadow border border-gray-200/50 p-2">
               <div className="grid grid-cols-2 gap-2">
                 <button
                   onClick={() => setActiveTab("analyze")}
-                  className={`flex items-center justify-center gap-3 py-4 px-6 rounded-xl font-semibold transition-all duration-300 ${
+                  className={`flex items-center justify-center gap-3 py-4 px-6 rounded-xl font-semibold transition-all duration-300 cursor-pointer ${
                     activeTab === "analyze"
                       ? "bg-gradient-to-r from-emerald-500 to-teal-600 text-white shadow-lg"
                       : "text-gray-600 hover:bg-gray-100"
@@ -233,7 +233,7 @@ export default function CheckingPage({ onBackToHome }) {
                 </button>
                 <button
                   onClick={() => setActiveTab("history")}
-                  className={`flex items-center justify-center gap-3 py-4 px-6 rounded-xl font-semibold transition-all duration-300 ${
+                  className={`flex items-center justify-center gap-3 py-4 px-6 rounded-xl font-semibold transition-all duration-300 cursor-pointer ${
                     activeTab === "history"
                       ? "bg-gradient-to-r from-emerald-500 to-teal-600 text-white shadow-lg"
                       : "text-gray-600 hover:bg-gray-100"
@@ -249,14 +249,14 @@ export default function CheckingPage({ onBackToHome }) {
             {activeTab === "analyze" && (
               <div className="space-y-8">
                 {/* Upload Card */}
-                <div className="bg-white/80 backdrop-blur-xl rounded-3xl shadow-xl border border-gray-200/50 p-10">
+                <div className="bg-white/80 backdrop-blur-xl rounded-xl shadow border border-gray-200/50 p-10">
                   <h2 className="text-2xl font-bold text-gray-900 mb-8 flex items-center gap-3">
                     <Upload className="w-7 h-7 text-emerald-600" />
                     Upload Plant Image
                   </h2>
 
                   <div
-                    className={`relative border-4 border-dashed rounded-3xl p-16 text-center transition-all duration-300 cursor-pointer ${
+                    className={`relative border-2 border-dashed rounded-2xl p-10 text-center transition-all duration-300 cursor-pointer ${
                       isDragOver
                         ? "border-emerald-500 bg-emerald-50/70"
                         : "border-gray-300 hover:border-emerald-400 hover:bg-emerald-50/30"
@@ -293,8 +293,8 @@ export default function CheckingPage({ onBackToHome }) {
                       </div>
                     ) : (
                       <div className="space-y-6">
-                        <div className="w-28 h-28 mx-auto bg-gradient-to-br from-emerald-200 to-teal-300 rounded-full flex items-center justify-center">
-                          <Image className="w-14 h-14 text-emerald-700" />
+                        <div className="w-20 h-20 mx-auto bg-gradient-to-br from-emerald-200 to-teal-300 rounded-full flex items-center justify-center">
+                          <Image className="w-10 h-10 text-emerald-700" />
                         </div>
                         <div>
                           <p className="text-2xl font-bold text-gray-800">
@@ -315,7 +315,7 @@ export default function CheckingPage({ onBackToHome }) {
                       className={`flex-1 py-5 px-8 rounded-2xl font-bold text-lg transition-all duration-300 flex items-center justify-center gap-3 ${
                         !selectedImage || isLoading
                           ? "bg-gray-200 text-gray-500 cursor-not-allowed"
-                          : "bg-gradient-to-r from-emerald-500 to-teal-600 text-white hover:shadow-xl transform hover:scale-105 active:scale-95"
+                          : "bg-gradient-to-r from-emerald-500 to-teal-600 text-white hover:shadow-xl transform hover:scale-105 active:scale-95 cursor-pointer"
                       }`}
                     >
                       {isLoading ? (
@@ -334,7 +334,7 @@ export default function CheckingPage({ onBackToHome }) {
                     {selectedImage && !isLoading && (
                       <button
                         onClick={resetForm}
-                        className="px-8 py-5 border-2 border-gray-300 rounded-2xl font-bold hover:bg-gray-50 transition-all flex items-center justify-center gap-3"
+                        className="px-8 py-5 border-2 border-gray-300 rounded-2xl font-bold hover:bg-gray-50 transition-all flex items-center justify-center gap-3 cursor-pointer"
                       >
                         <X className="w-6 h-6" />
                         Clear
@@ -354,15 +354,15 @@ export default function CheckingPage({ onBackToHome }) {
                     <div
                       className={`rounded-3xl p-10 border-4 ${
                         prediction.result === "infected"
-                          ? "bg-red-50 border-red-400"
+                          ? "bg-red-50 border-emerald-400"
                           : prediction.result === "not infected"
                           ? "bg-emerald-50 border-emerald-400"
-                          : "bg-amber-50 border-amber-400"
+                          : "bg-amber-50 border-emerald-400"
                       }`}
                     >
                       <div className="flex items-center gap-6">
                         <div
-                          className={`w-20 h-20 rounded-full flex items-center justify-center shadow-lg ${
+                          className={`w-16 h-16 rounded-full flex items-center justify-center shadow ${
                             prediction.result === "infected"
                               ? "bg-red-200"
                               : "bg-emerald-200"
@@ -376,7 +376,7 @@ export default function CheckingPage({ onBackToHome }) {
                         </div>
                         <div>
                           <h4
-                            className={`text-4xl font-bold ${
+                            className={`text-3xl font-bold ${
                               prediction.result === "infected"
                                 ? "text-red-800"
                                 : "text-emerald-800"
@@ -386,7 +386,7 @@ export default function CheckingPage({ onBackToHome }) {
                               ? "Arsenic Toxicity Detected"
                               : "No Arsenic Detected – Healthy Plant"}
                           </h4>
-                          <p className="text-2xl font-bold mt-4 text-gray-700">
+                          <p className="text-2xl font-bold mt-4 text-gray-900">
                             Confidence: {formatConfidence(prediction.confidence)}%
                           </p>
                           {prediction.message && (
@@ -400,7 +400,7 @@ export default function CheckingPage({ onBackToHome }) {
 
                     <button
                       onClick={resetForm}
-                      className="mt-10 w-full py-5 bg-gradient-to-r from-emerald-500 to-teal-600 text-white rounded-2xl font-bold text-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center gap-3"
+                      className="mt-10 w-full py-5 bg-gradient-to-r from-emerald-500 to-teal-600 text-white rounded-2xl font-bold text-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center gap-3 cursor-pointer"
                     >
                       <Plus className="w-6 h-6" />
                       Analyze Another Plant
@@ -412,14 +412,14 @@ export default function CheckingPage({ onBackToHome }) {
 
             {/* History Tab */}
             {activeTab === "history" && (
-              <div className="bg-white/80 backdrop-blur-xl rounded-3xl shadow-xl border border-gray-200/50 p-10">
+              <div className="bg-white/80 backdrop-blur-xl rounded-xl shadow border border-gray-200/50 p-4">
                 <h2 className="text-3xl font-bold text-gray-900 mb-8 flex items-center gap-3">
                   <History className="w-8 h-8 text-emerald-600" />
                   Analysis History
                 </h2>
 
                 {predictions.length > 0 ? (
-                  <div className="space-y-5 max-h-96 overflow-y-auto">
+                  <div className="space-y-2 max-h-[65vh] overflow-y-auto pr-2">
                     {predictions.map((pred, i) => (
                       <div
                         key={pred.id || i}
@@ -471,7 +471,7 @@ export default function CheckingPage({ onBackToHome }) {
           {/* Sidebar */}
           <div className="space-y-8">
             {/* Quick Tips */}
-            <div className="bg-gradient-to-br from-emerald-500 to-teal-600 rounded-3xl shadow-2xl p-8 text-white">
+            <div className="bg-gradient-to-br from-emerald-500 to-teal-600 rounded-xl shadow p-8 text-white">
               <h3 className="text-2xl font-bold mb-6 flex items-center gap-3">
                 <Sparkles className="w-8 h-8" />
                 Pro Tips
@@ -486,32 +486,8 @@ export default function CheckingPage({ onBackToHome }) {
               </ul>
             </div>
 
-            {/* Stats */}
-            <div className="bg-white/80 backdrop-blur-xl rounded-3xl shadow-xl border border-gray-200/50 p-8">
-              <h3 className="text-2xl font-bold text-gray-900 mb-6">
-                Model Performance
-              </h3>
-              <div className="space-y-6">
-                <div>
-                  <div className="flex justify-between items-center mb-2">
-                    <span className="text-gray-600">Accuracy</span>
-                    <span className="text-3xl font-bold text-emerald-600">98.7%</span>
-                  </div>
-                  <div className="w-full bg-gray-200 rounded-full h-4">
-                    <div className="bg-gradient-to-r from-emerald-500 to-teal-600 h-4 rounded-full w-11/12"></div>
-                  </div>
-                </div>
-                <div className="pt-6 border-t border-gray-200">
-                  <p className="text-sm text-gray-600">
-                    <Info className="w-4 h-4 inline mr-2" />
-                    Trained on 50,000+ labeled plant images
-                  </p>
-                </div>
-              </div>
-            </div>
-
             {/* Care Tips */}
-            <div className="bg-gradient-to-br from-teal-500 to-cyan-600 rounded-3xl shadow-2xl p-8 text-white">
+            <div className="bg-gradient-to-br from-teal-500 to-cyan-600 rounded-xl shadow p-8 text-white">
               <h3 className="text-2xl font-bold mb-6">Prevention Tips</h3>
               <div className="grid grid-cols-2 gap-4 text-center">
                 <div className="bg-white/20 backdrop-blur-md rounded-2xl p-4">
