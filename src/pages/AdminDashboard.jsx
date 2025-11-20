@@ -65,9 +65,16 @@ export default function AdminDashboard({ onBackToHome }) {
       setUsers(usersData || []);
       setPredictions(predictionsData || []);
       setTrainingStats(trainingData);
-      
-      if (!statsData && !usersData.length && !predictionsData.length && !trainingData) {
-        setError("Unable to connect to server. Make sure the backend is running on http://localhost:8000");
+
+      if (
+        !statsData &&
+        !usersData.length &&
+        !predictionsData.length &&
+        !trainingData
+      ) {
+        setError(
+          "Unable to connect to server. Make sure the backend is running on http://localhost:8000"
+        );
       }
     } catch (err) {
       console.error("Error fetching data:", err);
@@ -82,12 +89,14 @@ export default function AdminDashboard({ onBackToHome }) {
   };
 
   const formatConfidence = (conf) => {
-    return typeof conf === "number" ? (conf * 100).toFixed(1) : (conf).toFixed(1);
+    return typeof conf === "number" ? (conf * 100).toFixed(1) : conf.toFixed(1);
   };
 
   const handleRetrain = async () => {
     try {
-      const response = await fetch("http://localhost:8000/retrain", { method: "POST" });
+      const response = await fetch("http://localhost:8000/retrain", {
+        method: "POST",
+      });
       if (response.ok) {
         const data = await response.json();
         alert("Model retrained successfully!");
@@ -148,13 +157,15 @@ export default function AdminDashboard({ onBackToHome }) {
                 <h1 className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent">
                   Admin Dashboard
                 </h1>
-                <p className="text-sm text-gray-600">System Management & Analytics</p>
+                <p className="text-sm text-gray-600">
+                  System Management & Analytics
+                </p>
               </div>
             </div>
             <div className="flex items-center space-x-4">
               <button
                 onClick={onBackToHome}
-                className="px-4 py-2 bg-white border border-gray-200 rounded-lg text-gray-700 font-medium hover:bg-gray-50 transition-all duration-200 flex items-center space-x-2"
+                className="px-4 py-2 bg-white border border-gray-200 rounded-lg text-gray-700 font-medium hover:bg-gray-50 transition-all duration-200 flex items-center space-x-2 cursor-pointer"
               >
                 <svg
                   className="w-5 h-5"
@@ -173,7 +184,7 @@ export default function AdminDashboard({ onBackToHome }) {
               </button>
               <button
                 onClick={handleLogout}
-                className="px-4 py-2 bg-red-500 text-white rounded-lg font-medium hover:bg-red-600 transition-all duration-200 flex items-center space-x-2"
+                className="px-4 py-2 bg-red-500 text-white rounded-lg font-medium hover:bg-red-600 transition-all duration-200 flex items-center space-x-2 cursor-pointer"
               >
                 <svg
                   className="w-5 h-5"
@@ -202,7 +213,11 @@ export default function AdminDashboard({ onBackToHome }) {
           {[
             { id: "overview", label: "📊 Overview", icon: "overview" },
             { id: "users", label: "👥 Users", icon: "users" },
-            { id: "predictions", label: "📋 All Predictions", icon: "predictions" },
+            {
+              id: "predictions",
+              label: "📋 All Predictions",
+              icon: "predictions",
+            },
             { id: "training", label: "🧠 Model & Training", icon: "training" },
           ].map((tab) => (
             <button
@@ -222,8 +237,18 @@ export default function AdminDashboard({ onBackToHome }) {
         {error && (
           <div className="mb-6 bg-red-50 border border-red-200 rounded-lg p-6 text-red-700">
             <div className="flex items-start space-x-3">
-              <svg className="w-6 h-6 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              <svg
+                className="w-6 h-6 flex-shrink-0 mt-0.5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
               </svg>
               <div className="flex-1">
                 <p className="font-semibold">Connection Error</p>
@@ -248,38 +273,78 @@ export default function AdminDashboard({ onBackToHome }) {
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="text-gray-600 font-medium">Total Users</h3>
                   <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
-                    <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-2a6 6 0 0112 0v2z" />
+                    <svg
+                      className="w-6 h-6 text-blue-600"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M12 4.354a4 4 0 110 5.292M15 21H3v-2a6 6 0 0112 0v2z"
+                      />
                     </svg>
                   </div>
                 </div>
-                <p className="text-3xl font-bold text-gray-900">{stats.total_users}</p>
+                <p className="text-3xl font-bold text-gray-900">
+                  {stats.total_users}
+                </p>
                 <p className="text-sm text-gray-500 mt-2">Registered users</p>
               </div>
 
               <div className="bg-white/80 backdrop-blur-md rounded-xl shadow p-6 border border-white/30">
                 <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-gray-600 font-medium">Total Predictions</h3>
+                  <h3 className="text-gray-600 font-medium">
+                    Total Predictions
+                  </h3>
                   <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
-                    <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    <svg
+                      className="w-6 h-6 text-green-600"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                      />
                     </svg>
                   </div>
                 </div>
-                <p className="text-3xl font-bold text-gray-900">{stats.total_predictions}</p>
+                <p className="text-3xl font-bold text-gray-900">
+                  {stats.total_predictions}
+                </p>
                 <p className="text-sm text-gray-500 mt-2">Analysis performed</p>
               </div>
 
               <div className="bg-white/80 backdrop-blur-md rounded-xl shadow p-6 border border-white/30">
                 <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-gray-600 font-medium">Infected Samples</h3>
+                  <h3 className="text-gray-600 font-medium">
+                    Infected Samples
+                  </h3>
                   <div className="w-10 h-10 bg-red-100 rounded-lg flex items-center justify-center">
-                    <svg className="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4v2m0 4v1m-9-14h18a2 2 0 012 2v14a2 2 0 01-2 2H3a2 2 0 01-2-2V5a2 2 0 012-2z" />
+                    <svg
+                      className="w-6 h-6 text-red-600"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M12 9v2m0 4v2m0 4v1m-9-14h18a2 2 0 012 2v14a2 2 0 01-2 2H3a2 2 0 01-2-2V5a2 2 0 012-2z"
+                      />
                     </svg>
                   </div>
                 </div>
-                <p className="text-3xl font-bold text-red-600">{stats.infected_count}</p>
+                <p className="text-3xl font-bold text-red-600">
+                  {stats.infected_count}
+                </p>
                 <p className="text-sm text-gray-500 mt-2">Positive results</p>
               </div>
 
@@ -287,12 +352,24 @@ export default function AdminDashboard({ onBackToHome }) {
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="text-gray-600 font-medium">Infection Rate</h3>
                   <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
-                    <svg className="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 12a4 4 0 11-8 0 4 4 0 018 0zM0 8C0 3.58 3.58 0 8 0s8 3.58 8 8-3.58 8-8 8-8-3.58-8-8z" />
+                    <svg
+                      className="w-6 h-6 text-purple-600"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M7 12a4 4 0 11-8 0 4 4 0 018 0zM0 8C0 3.58 3.58 0 8 0s8 3.58 8 8-3.58 8-8 8-8-3.58-8-8z"
+                      />
                     </svg>
                   </div>
                 </div>
-                <p className="text-3xl font-bold text-purple-600">{stats.infection_rate}%</p>
+                <p className="text-3xl font-bold text-purple-600">
+                  {stats.infection_rate}%
+                </p>
                 <p className="text-sm text-gray-500 mt-2">Of all predictions</p>
               </div>
             </div>
@@ -303,17 +380,23 @@ export default function AdminDashboard({ onBackToHome }) {
               <div className="space-y-3">
                 <div className="flex justify-between items-center pb-3 border-b border-gray-200">
                   <span className="text-gray-600">Healthy Samples</span>
-                  <span className="text-lg font-bold text-green-600">{stats.healthy_count}</span>
+                  <span className="text-lg font-bold text-green-600">
+                    {stats.healthy_count}
+                  </span>
                 </div>
                 <div className="flex justify-between items-center pb-3 border-b border-gray-200">
                   <span className="text-gray-600">Average per User</span>
                   <span className="text-lg font-bold text-blue-600">
-                    {stats.total_users > 0 ? (stats.total_predictions / stats.total_users).toFixed(1) : 0}
+                    {stats.total_users > 0
+                      ? (stats.total_predictions / stats.total_users).toFixed(1)
+                      : 0}
                   </span>
                 </div>
                 <div className="flex justify-between items-center">
                   <span className="text-gray-600">Model Status</span>
-                  <span className="text-lg font-bold text-emerald-600">✓ Active</span>
+                  <span className="text-lg font-bold text-emerald-600">
+                    ✓ Active
+                  </span>
                 </div>
               </div>
             </div>
@@ -323,28 +406,51 @@ export default function AdminDashboard({ onBackToHome }) {
         {/* Users Tab */}
         {activeTab === "users" && (
           <div className="bg-white/80 backdrop-blur-md rounded-xl shadow p-6 border border-white/30 animate-fadeIn">
-            <h2 className="text-2xl font-bold text-gray-900 mb-6">Registered Users</h2>
+            <h2 className="text-2xl font-bold text-gray-900 mb-6">
+              Registered Users
+            </h2>
             {users.length > 0 ? (
               <div className="overflow-x-auto">
                 <table className="w-full">
                   <thead>
                     <tr className="border-b border-gray-200">
-                      <th className="text-left py-3 px-4 font-semibold text-gray-700">ID</th>
-                      <th className="text-left py-3 px-4 font-semibold text-gray-700">Name</th>
-                      <th className="text-left py-3 px-4 font-semibold text-gray-700">Email</th>
-                      <th className="text-left py-3 px-4 font-semibold text-gray-700">Registered At</th>
-                      <th className="text-left py-3 px-4 font-semibold text-gray-700">Predictions</th>
+                      <th className="text-left py-3 px-4 font-semibold text-gray-700">
+                        ID
+                      </th>
+                      <th className="text-left py-3 px-4 font-semibold text-gray-700">
+                        Name
+                      </th>
+                      <th className="text-left py-3 px-4 font-semibold text-gray-700">
+                        Email
+                      </th>
+                      <th className="text-left py-3 px-4 font-semibold text-gray-700">
+                        Registered At
+                      </th>
+                      <th className="text-left py-3 px-4 font-semibold text-gray-700">
+                        Predictions
+                      </th>
                     </tr>
                   </thead>
                   <tbody>
                     {users.map((user) => {
-                      const userPredictionCount = predictions.filter((p) => p.user_id === user.id).length;
+                      const userPredictionCount = predictions.filter(
+                        (p) => p.user_id === user.id
+                      ).length;
                       return (
-                        <tr key={user.id} className="border-b border-gray-100 hover:bg-gray-50 transition">
+                        <tr
+                          key={user.id}
+                          className="border-b border-gray-100 hover:bg-gray-50 transition"
+                        >
                           <td className="py-3 px-4 text-gray-900">{user.id}</td>
-                          <td className="py-3 px-4 text-gray-900 font-medium">{user.name}</td>
-                          <td className="py-3 px-4 text-gray-600">{user.email}</td>
-                          <td className="py-3 px-4 text-gray-600 text-sm">{formatDate(user.created_at)}</td>
+                          <td className="py-3 px-4 text-gray-900 font-medium">
+                            {user.name}
+                          </td>
+                          <td className="py-3 px-4 text-gray-600">
+                            {user.email}
+                          </td>
+                          <td className="py-3 px-4 text-gray-600 text-sm">
+                            {formatDate(user.created_at)}
+                          </td>
                           <td className="py-3 px-4">
                             <span className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-semibold">
                               {userPredictionCount}
@@ -367,7 +473,9 @@ export default function AdminDashboard({ onBackToHome }) {
         {/* Predictions Tab */}
         {activeTab === "predictions" && (
           <div className="bg-white/80 backdrop-blur-md rounded-xl shadow p-6 border border-white/30 animate-fadeIn">
-            <h2 className="text-2xl font-bold text-gray-900 mb-6">All Predictions</h2>
+            <h2 className="text-2xl font-bold text-gray-900 mb-6">
+              All Predictions
+            </h2>
             {predictions.length > 0 ? (
               <div className="space-y-3 max-h-[600px] overflow-y-auto">
                 {predictions.map((pred, index) => (
@@ -377,42 +485,58 @@ export default function AdminDashboard({ onBackToHome }) {
                   >
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
                       <div>
-                        <p className="text-xs text-gray-600 font-semibold uppercase">Result</p>
+                        <p className="text-xs text-gray-600 font-semibold uppercase">
+                          Result
+                        </p>
                         <div className="flex items-center space-x-2 mt-1">
                           <div
                             className={`w-3 h-3 rounded-full ${
-                              pred.result === "infected" ? "bg-red-500" : "bg-green-500"
+                              pred.result === "infected"
+                                ? "bg-red-500"
+                                : "bg-green-500"
                             }`}
                           ></div>
                           <p
                             className={`font-bold capitalize ${
-                              pred.result === "infected" ? "text-red-700" : "text-green-700"
+                              pred.result === "infected"
+                                ? "text-red-700"
+                                : "text-green-700"
                             }`}
                           >
-                            {pred.result === "infected" ? "⚠️ Infected" : "✅ Healthy"}
+                            {pred.result === "infected"
+                              ? "⚠️ Infected"
+                              : "✅ Healthy"}
                           </p>
                         </div>
                       </div>
                       <div>
-                        <p className="text-xs text-gray-600 font-semibold uppercase">Confidence</p>
+                        <p className="text-xs text-gray-600 font-semibold uppercase">
+                          Confidence
+                        </p>
                         <p className="text-lg font-bold text-gray-900 mt-1">
                           {formatConfidence(pred.confidence)}%
                         </p>
                       </div>
                       <div>
-                        <p className="text-xs text-gray-600 font-semibold uppercase">User ID</p>
+                        <p className="text-xs text-gray-600 font-semibold uppercase">
+                          User ID
+                        </p>
                         <p className="text-lg font-bold text-gray-900 mt-1">
                           {pred.user_id || "N/A"}
                         </p>
                       </div>
                       <div>
-                        <p className="text-xs text-gray-600 font-semibold uppercase">File</p>
+                        <p className="text-xs text-gray-600 font-semibold uppercase">
+                          File
+                        </p>
                         <p className="text-sm font-mono text-gray-700 mt-1 truncate">
                           {pred.filename}
                         </p>
                       </div>
                       <div>
-                        <p className="text-xs text-gray-600 font-semibold uppercase">Timestamp</p>
+                        <p className="text-xs text-gray-600 font-semibold uppercase">
+                          Timestamp
+                        </p>
                         <p className="text-sm text-gray-600 mt-1">
                           {formatDate(pred.timestamp)}
                         </p>
@@ -435,62 +559,116 @@ export default function AdminDashboard({ onBackToHome }) {
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
               <div className="bg-white/80 backdrop-blur-md rounded-xl shadow p-6 border border-white/30">
                 <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-gray-600 font-medium">Infected Training Images</h3>
+                  <h3 className="text-gray-600 font-medium">
+                    Infected Training Images
+                  </h3>
                   <div className="w-10 h-10 bg-red-100 rounded-lg flex items-center justify-center">
-                    <svg className="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    <svg
+                      className="w-6 h-6 text-red-600"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+                      />
                     </svg>
                   </div>
                 </div>
-                <p className="text-3xl font-bold text-red-600">{trainingStats.infected_count}</p>
-                <p className="text-sm text-gray-500 mt-2">Images in training set</p>
+                <p className="text-3xl font-bold text-red-600">
+                  {trainingStats.infected_count}
+                </p>
+                <p className="text-sm text-gray-500 mt-2">
+                  Images in training set
+                </p>
               </div>
 
               <div className="bg-white/80 backdrop-blur-md rounded-xl shadow p-6 border border-white/30">
                 <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-gray-600 font-medium">Healthy Training Images</h3>
+                  <h3 className="text-gray-600 font-medium">
+                    Healthy Training Images
+                  </h3>
                   <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
-                    <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    <svg
+                      className="w-6 h-6 text-green-600"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+                      />
                     </svg>
                   </div>
                 </div>
-                <p className="text-3xl font-bold text-green-600">{trainingStats.healthy_count}</p>
-                <p className="text-sm text-gray-500 mt-2">Images in training set</p>
+                <p className="text-3xl font-bold text-green-600">
+                  {trainingStats.healthy_count}
+                </p>
+                <p className="text-sm text-gray-500 mt-2">
+                  Images in training set
+                </p>
               </div>
 
               <div className="bg-white/80 backdrop-blur-md rounded-xl shadow p-6 border border-white/30">
                 <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-gray-600 font-medium">Total Training Data</h3>
+                  <h3 className="text-gray-600 font-medium">
+                    Total Training Data
+                  </h3>
                   <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
-                    <svg className="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                    <svg
+                      className="w-6 h-6 text-purple-600"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+                      />
                     </svg>
                   </div>
                 </div>
-                <p className="text-3xl font-bold text-purple-600">{trainingStats.total_training_images}</p>
+                <p className="text-3xl font-bold text-purple-600">
+                  {trainingStats.total_training_images}
+                </p>
                 <p className="text-sm text-gray-500 mt-2">Total images</p>
               </div>
             </div>
 
             {/* Model Status */}
             <div className="bg-white/80 backdrop-blur-md rounded-xl shadow p-6 border border-white/30">
-              <h3 className="text-xl font-bold text-gray-900 mb-4">Model Status</h3>
+              <h3 className="text-xl font-bold text-gray-900 mb-4">
+                Model Status
+              </h3>
               <div className="space-y-4">
                 <div className="flex items-center justify-between p-4 bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-xl">
                   <div>
-                    <p className="text-lg font-bold text-green-700">✓ Model Ready</p>
+                    <p className="text-lg font-bold text-green-700">
+                      ✓ Model Ready
+                    </p>
                     <p className="text-sm text-green-600">
                       {trainingStats.model_ready
                         ? "All required training data is available"
                         : "Additional training data needed"}
                     </p>
                   </div>
-                  <div className="text-3xl">{trainingStats.model_ready ? "✅" : "⚠️"}</div>
+                  <div className="text-3xl">
+                    {trainingStats.model_ready ? "✅" : "⚠️"}
+                  </div>
                 </div>
 
                 <div className="p-4 bg-blue-50 border border-blue-200 rounded-xl">
-                  <p className="text-sm text-blue-700 font-semibold mb-2">Training Distribution:</p>
+                  <p className="text-sm text-blue-700 font-semibold mb-2">
+                    Training Distribution:
+                  </p>
                   <div className="space-y-2">
                     <div className="flex items-center justify-between">
                       <span className="text-blue-600">Infected Class:</span>
@@ -501,7 +679,9 @@ export default function AdminDashboard({ onBackToHome }) {
                             style={{
                               width: `${
                                 trainingStats.total_training_images > 0
-                                  ? (trainingStats.infected_count / trainingStats.total_training_images) * 100
+                                  ? (trainingStats.infected_count /
+                                      trainingStats.total_training_images) *
+                                    100
                                   : 0
                               }%`,
                             }}
@@ -509,7 +689,11 @@ export default function AdminDashboard({ onBackToHome }) {
                         </div>
                         <span className="text-blue-700 font-bold">
                           {trainingStats.total_training_images > 0
-                            ? ((trainingStats.infected_count / trainingStats.total_training_images) * 100).toFixed(1)
+                            ? (
+                                (trainingStats.infected_count /
+                                  trainingStats.total_training_images) *
+                                100
+                              ).toFixed(1)
                             : 0}
                           %
                         </span>
@@ -524,7 +708,9 @@ export default function AdminDashboard({ onBackToHome }) {
                             style={{
                               width: `${
                                 trainingStats.total_training_images > 0
-                                  ? (trainingStats.healthy_count / trainingStats.total_training_images) * 100
+                                  ? (trainingStats.healthy_count /
+                                      trainingStats.total_training_images) *
+                                    100
                                   : 0
                               }%`,
                             }}
@@ -532,7 +718,11 @@ export default function AdminDashboard({ onBackToHome }) {
                         </div>
                         <span className="text-blue-700 font-bold">
                           {trainingStats.total_training_images > 0
-                            ? ((trainingStats.healthy_count / trainingStats.total_training_images) * 100).toFixed(1)
+                            ? (
+                                (trainingStats.healthy_count /
+                                  trainingStats.total_training_images) *
+                                100
+                              ).toFixed(1)
                             : 0}
                           %
                         </span>
@@ -545,7 +735,12 @@ export default function AdminDashboard({ onBackToHome }) {
                   onClick={handleRetrain}
                   className="w-full py-3 px-4 bg-gradient-to-r from-purple-500 to-indigo-600 text-white rounded-xl font-semibold hover:shadow-lg transition-all duration-200 flex items-center justify-center space-x-2 cursor-pointer"
                 >
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg
+                    className="w-5 h-5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
                     <path
                       strokeLinecap="round"
                       strokeLinejoin="round"

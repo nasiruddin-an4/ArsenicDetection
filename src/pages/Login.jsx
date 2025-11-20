@@ -1,6 +1,11 @@
 import React, { useState } from "react";
+import { ArrowLeft } from "lucide-react";
 
-export default function Login({ onBackToHome, onNavigateToRegister, onNavigateToDetection }) {
+export default function Login({
+  onBackToHome,
+  onNavigateToRegister,
+  onNavigateToDetection,
+}) {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -17,11 +22,14 @@ export default function Login({ onBackToHome, onNavigateToRegister, onNavigateTo
     e.preventDefault();
     setIsLoading(true);
     setErrorMsg("");
-    
+
     try {
-      const response = await fetch(`http://localhost:8000/login?email=${formData.email}&password=${formData.password}`, {
-        method: "POST",
-      });
+      const response = await fetch(
+        `http://localhost:8000/login?email=${formData.email}&password=${formData.password}`,
+        {
+          method: "POST",
+        }
+      );
       const data = await response.json();
       if (response.ok) {
         // Save user info to localStorage
@@ -42,7 +50,6 @@ export default function Login({ onBackToHome, onNavigateToRegister, onNavigateTo
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-emerald-50 to-green-50 relative">
-
       {/* background blobs */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-0 left-1/4 w-96 h-96 bg-blue-300 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob"></div>
@@ -51,9 +58,8 @@ export default function Login({ onBackToHome, onNavigateToRegister, onNavigateTo
       </div>
 
       {/* Card */}
-      <div className="relative z-10 backdrop-blur-xl bg-white/70 border border-white/30 shadow-2xl rounded-3xl p-10 w-full max-w-md">
-
-        <h2 className="text-3xl font-bold text-center mb-6 bg-gradient-to-r from-blue-600 to-emerald-600 bg-clip-text text-transparent">
+      <div className="relative z-10 backdrop-blur-xl bg-white/70 border-2 border-white shadow-xl rounded-3xl p-10 w-full max-w-md">
+        <h2 className="text-3xl font-bold text-center mb-2 bg-gradient-to-r from-blue-600 to-emerald-600 bg-clip-text text-transparent">
           Login
         </h2>
 
@@ -77,7 +83,7 @@ export default function Login({ onBackToHome, onNavigateToRegister, onNavigateTo
               required
               value={formData.email}
               onChange={handleChange}
-              className="w-full mt-2 p-4 bg-white/80 backdrop-blur rounded-xl shadow-md focus:outline-none"
+              className="w-full mt-2 p-4 bg-white/80 backdrop-blur rounded-md shadow focus:outline-none"
               placeholder="Enter your email"
             />
           </div>
@@ -90,7 +96,7 @@ export default function Login({ onBackToHome, onNavigateToRegister, onNavigateTo
               required
               value={formData.password}
               onChange={handleChange}
-              className="w-full mt-2 p-4 bg-white/80 backdrop-blur rounded-xl shadow-md focus:outline-none"
+              className="w-full mt-2 p-4 bg-white/80 backdrop-blur rounded-md shadow focus:outline-none"
               placeholder="Enter your password"
             />
           </div>
@@ -98,11 +104,11 @@ export default function Login({ onBackToHome, onNavigateToRegister, onNavigateTo
           <button
             type="submit"
             disabled={isLoading}
-            className={`w-full py-4 bg-gradient-to-r from-blue-500 to-emerald-600 text-white text-lg font-semibold rounded-xl shadow-lg hover:shadow-2xl transition transform hover:scale-105 ${
-              isLoading ? 'opacity-70 cursor-not-allowed' : ''
+            className={`w-full py-4 bg-gradient-to-r from-blue-500 to-emerald-600 text-white text-lg font-semibold rounded-md shadow hover:shadow-xl transition transform hover:scale-105 cursor-pointer ${
+              isLoading ? "opacity-70 cursor-not-allowed" : ""
             }`}
           >
-            {isLoading ? 'Logging in...' : 'Login'}
+            {isLoading ? "Logging in..." : "Login"}
           </button>
         </form>
 
@@ -110,7 +116,7 @@ export default function Login({ onBackToHome, onNavigateToRegister, onNavigateTo
           Don't have an account?
           <button
             onClick={onNavigateToRegister}
-            className="text-emerald-600 font-semibold ml-1 hover:underline bg-none border-none cursor-pointer"
+            className="text-emerald-600 font-semibold ml-1 hover:underline bg-none border-none cursor-pointer underline"
           >
             Register here
           </button>
@@ -118,8 +124,13 @@ export default function Login({ onBackToHome, onNavigateToRegister, onNavigateTo
 
         <button
           onClick={onBackToHome}
-          className="w-full mt-4 py-2 text-gray-600 font-medium rounded-xl hover:bg-white/50 transition bg-none border-none cursor-pointer"
+          className="w-full mt-4 py-3 text-gray-600 font-medium rounded-md border border-gray-300 cursor-pointer flex items-center justify-center gap-2
+             hover:bg-gray-100 transition-all duration-200 group"
         >
+          <ArrowLeft
+            size={18}
+            className="transition-transform duration-300 group-hover:-translate-x-2"
+          />
           Back to Home
         </button>
       </div>
